@@ -1,0 +1,59 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <form name="Join to the chat">
+    <input id="room-name-input" type="text" size="100" placeholder="type room name"><br>
+    <input id="nickname" type="text" size="50" placeholder="type your nickname"><br>
+    <input id="join" type="button" value="Join">
+    </form>
+
+
+    <form name="send-message">
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+    </form>
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+    });
+
+    document.querySelector('#room-name-input').focus();
+
+
+document.querySelector('#join').onclick = function(event) {
+    var roomName = document.querySelector('#room-name-input').value;
+    var nickName = document.querySelector('#nickname').value;
+
+    socket.emit("join", {room: roomName, nickname: nickName })
+
+}; 
+
+document.querySelector('#chat-message-submit').onclick = function(event){
+    var roomName = document.querySelector('#room-name-input').value;
+    var nickName = document.querySelector('#nickname').value;
+    var message = document.querySelector('#chat-message-input').value;
+
+    socket.emit("my_room_event", {room: roomName, nickname: nickName, data: message})
+}
+socket.on('my_response', function(msg, cb) {
+    //const data = JSON.parse(msg);
+    document.querySelector('#chat-log').value += (msg.data + '\n');   
+                if (cb)
+                    cb();
+            });
+         
+</script>
+
+
+</body>
+</html>
