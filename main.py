@@ -2,10 +2,11 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-#from flask_cors import CORS
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+
 #CORS(app, resources={r"/*": {"origins": "localhost:5000"}})
 socketio = SocketIO(app)
 
@@ -75,4 +76,4 @@ def leave(message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', debug = False)
+    socketio.run(app, host='0.0.0.0', debug = True)
