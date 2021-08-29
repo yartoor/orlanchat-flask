@@ -7,8 +7,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 
-#CORS(app, resources={r"/*": {"origins": "localhost:5000"}})
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 @socketio.event
 def enter(message):
